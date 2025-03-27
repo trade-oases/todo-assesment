@@ -38,7 +38,7 @@ export default function TodoListPage() {
     <div className="container mx-auto p-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">{t("title")}</h1>
-        <Link href="/create">
+        <Link href={`/${lang}/create`}>
           <Button>{t("create_new_todo")}</Button>
         </Link>
       </div>
@@ -61,7 +61,7 @@ export default function TodoListPage() {
             <CardContent>
               <p>{todo.description}</p>
               <div className="mt-4">
-                <Link href={`/${todo.id}`}>
+                <Link href={`/${lang}/${todo.id}`}>
                   <Button variant="outline">{t("view_details")}</Button>
                 </Link>
               </div>

@@ -95,7 +95,7 @@ export default function CreateTodoPage() {
                 type="button" 
                 variant="outline" 
                 className="w-full"
-                onClick={() => router.push('/')}
+                onClick={() => router.push(`/${lang}`)}
               >
                 {t("cancel")}
               </Button>

@@ -31,11 +31,11 @@ export default async function RootLayout({
   params
 }: Readonly<{
   children: React.ReactNode
-  params: {
+  params: Promise< {
     lang: string
-  }
+  }>
 }>) {
-  const { lang } = await  params
+  const { lang } =  await params
   return (
     <html lang={lang} dir={dir(lang)}>
       <body

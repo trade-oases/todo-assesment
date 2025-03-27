@@ -76,7 +76,7 @@ export default function TodoDetailPage() {
   return (
     <div className="container mx-auto p-8 max-w-2xl">
       <Button
-        onClick={() => router.push('/')}
+        onClick={() => router.push(`/${lang}`)}
         variant="default"
         className="mb-6 w-fit flex items-center "
       > {lang=="ar"? <ArrowRight  size={16}/>:<ArrowLeft size={16}/> }
