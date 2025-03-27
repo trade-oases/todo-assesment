@@ -129,6 +129,10 @@ export default function TodoDetailPage() {
           </div>
         </CardContent>
       </Card>
+      <div className="flex flex-col justify-evenly space-y-1 w-full my-4">
+        <Button className='w-full' variant="default">Mark as done</Button>
+        <Button className='w-full' variant="destructive">Delete todo</Button>
+      </div>
     </div>
   );
 }
