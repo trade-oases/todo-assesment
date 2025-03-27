@@ -1,0 +1,12 @@
+{
+    "title": "إنشاء مهمة جديدة",
+    "todo_title": "العنوان",
+    "todo_description": "الوصف",
+    "todo_status": "الحالة",
+    "todo_status_todo": "للعمل",
+    "todo_status_in_progress": "قيد التنفيذ",
+    "todo_status_done": "منجز",
+    "todo_status_unknown": "غير معروف",
+    "create_todo": "إنشاء مهمة",
+    "cancel": "إلغاء"
+}

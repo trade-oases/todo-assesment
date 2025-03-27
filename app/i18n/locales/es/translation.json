@@ -1,0 +1,9 @@
+{
+    "title": "Mi todo",
+    "create_new_todo": "Crear nuevo todo",
+    "view_details": "Ver detalles",
+    "todo": "Desconocido",
+    "in_progress": "En progreso",
+    "done":"Hecho",
+    "unknown":"Desconocido"
+  }

@@ -1,12 +1,18 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import { Todo } from '@/types/todo';
+import { useTranslation } from '@/app/i18n/client';
+import {getTranslationKey} from '@/lib/utils'
 
 export default function TodoListPage() {
+  const params = useParams< { lang:string }>()
+  const lang= params.lang
+  const { t } = useTranslation(lang,"translation")  
   const [todos, setTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
@@ -31,9 +37,9 @@ export default function TodoListPage() {
   return (
     <div className="container mx-auto p-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">My Todos</h1>
+        <h1 className="text-2xl font-bold">{t("title")}</h1>
         <Link href="/create">
-          <Button>Create New Todo</Button>
+          <Button>{t("create_new_todo")}</Button>
         </Link>
       </div>
 
@@ -48,7 +54,7 @@ export default function TodoListPage() {
                   ${todo.status === 'TODO' ? 'bg-gray-200' : 
                     todo.status === 'IN_PROGRESS' ? 'bg-blue-200' : 'bg-green-200'}
                 `}>
-                  {todo.status}
+                  {t(getTranslationKey(todo.status))}
                 </span>
               </CardTitle>
             </CardHeader>
@@ -56,7 +62,7 @@ export default function TodoListPage() {
               <p>{todo.description}</p>
               <div className="mt-4">
                 <Link href={`/${todo.id}`}>
-                  <Button variant="outline">View Details</Button>
+                  <Button variant="outline">{t("view_details")}</Button>
                 </Link>
               </div>
             </CardContent>

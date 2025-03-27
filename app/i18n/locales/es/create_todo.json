@@ -1,0 +1,12 @@
+{
+    "title": "Crear Nueva Tarea",
+    "todo_title": "Título",
+    "todo_description": "Descripción",
+    "todo_status": "Estado",
+    "todo_status_todo": "Por Hacer",
+    "todo_status_in_progress": "En Progreso",
+    "todo_status_done": "Terminado",
+    "todo_status_unknown": "Desconocido",
+    "create_todo": "Crear Tarea",
+    "cancel": "Cancelar"
+}

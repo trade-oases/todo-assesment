@@ -1,0 +1,12 @@
+{
+    "title": "Create New Todo",
+    "todo_title": "Title",
+    "todo_description": "Description",
+    "todo_status": "Status",
+    "todo_status_todo": "Todo",
+    "todo_status_in_progress": "In Progress",
+    "todo_status_done": "Done",
+    "todo_status_unknown": "Unknown",
+    "create_todo": "Create Todo",
+    "cancel": "Cancel"
+}

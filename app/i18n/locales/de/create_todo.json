@@ -1,0 +1,12 @@
+{
+    "title": "Neue Aufgabe erstellen",
+    "todo_title": "Titel",
+    "todo_description": "Beschreibung",
+    "todo_status": "Status",
+    "todo_status_todo": "Zu erledigen",
+    "todo_status_in_progress": "In Bearbeitung",
+    "todo_status_done": "Erledigt",
+    "todo_status_unknown": "Unbekannt",
+    "create_todo": "Aufgabe erstellen",
+    "cancel": "Abbrechen"
+}
