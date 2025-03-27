@@ -1,0 +1,12 @@
+{
+    "title": "Créer une Nouvelle Tâche",
+    "todo_title": "Titre",
+    "todo_description": "Description",
+    "todo_status": "Statut",
+    "todo_status_todo": "À Faire",
+    "todo_status_in_progress": "En Cours",
+    "todo_status_done": "Terminé",
+    "todo_status_unknown": "Inconnu",
+    "create_todo": "Créer une Tâche",
+    "cancel": "Annuler"
+}

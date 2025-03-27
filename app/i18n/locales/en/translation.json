@@ -1,0 +1,9 @@
+{
+    "title": "My todos",
+    "create_new_todo": "Create New Todo",
+    "view_details": "View Details",
+    "todo":"TODO",
+    "in_progress":"IN PROGRESS",
+    "done":"DONE",
+    "unknown":"UNKNOWN"
+  }

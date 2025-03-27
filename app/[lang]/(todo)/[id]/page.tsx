@@ -6,11 +6,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Todo, TodoMessage } from '@/types/todo';
-import { ArrowLeft } from 'lucide-react'
+import { useTranslation } from '@/app/i18n/client';
+import { ArrowLeft,ArrowRight } from 'lucide-react'
+import {getTranslationKey} from '@/lib/utils'
 
 export default function TodoDetailPage() {
-  const params = useParams< { id: string }>()
+  const params = useParams< { id: string,lang:string }>()
   const todo_id= params.id
+  const lang= params.lang
+  const { t } = useTranslation(lang,"details")
   const [todo, setTodo] = useState<Todo | null>(null);
   const [messages, setMessages] = useState<TodoMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
@@ -67,15 +71,16 @@ export default function TodoDetailPage() {
     // TODO: Implement actual message sending logic
   };
 
-  if (!todo) return <div>Loading...</div>;
+  if (!todo) return <div>{t("loading")}</div>;
 
   return (
     <div className="container mx-auto p-8 max-w-2xl">
       <Button
-        onClick={() => router.push('/')}
+        onClick={() => router.push(`/${lang}`)}
         variant="default"
         className="mb-6 w-fit flex items-center "
-      > <ArrowLeft size={16}/> <span>Back</span></Button>
+      > {lang=="ar"? <ArrowRight  size={16}/>:<ArrowLeft size={16}/> }
+       <span>{t("back")}</span></Button>
       <Card className="mb-6">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
@@ -85,7 +90,7 @@ export default function TodoDetailPage() {
               ${todo.status === 'TODO' ? 'bg-gray-200' : 
                 todo.status === 'IN_PROGRESS' ? 'bg-blue-200' : 'bg-green-200'}
             `}>
-              {todo.status}
+              {t(getTranslationKey(todo.status))}
             </span>
           </CardTitle>
         </CardHeader>
@@ -96,7 +101,7 @@ export default function TodoDetailPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Todo Conversations</CardTitle>
+          <CardTitle>{t("conversation")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-64 overflow-y-auto mb-4 space-y-2 ">
@@ -122,16 +127,16 @@ export default function TodoDetailPage() {
             <Input 
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
-              placeholder="Type a message..."
+              placeholder={t("type_a_message")}
               onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
             />
-            <Button onClick={sendMessage}>Send</Button>
+            <Button onClick={sendMessage}>{t("send")}</Button>
           </div>
         </CardContent>
       </Card>
-      <div className="flex flex-col justify-evenly space-y-1 w-full my-4">
-        <Button className='w-full' variant="default">Mark as done</Button>
-        <Button className='w-full' variant="destructive">Delete todo</Button>
+      <div className="flex flex-col justify-evenly space-y-1 w-full mt-4 mb-16">
+        <Button className='w-full' variant="default">{t("mark_as_done")}</Button>
+        <Button className='w-full' variant="destructive">{t("delete")}</Button>
       </div>
     </div>
   );

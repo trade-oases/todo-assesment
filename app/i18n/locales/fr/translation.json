@@ -1,0 +1,9 @@
+{
+    "title": "Mon tout",
+    "create_new_todo": "Créer une nouvelle tâche",
+    "view_details": "Voir les détails",
+    "todo": "À FAIRE",
+    "in_progress": "EN COURS",
+    "done": "FAIT",
+    "unknown": "INCONNU"
+  }
