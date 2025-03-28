@@ -9,12 +9,16 @@ import { Todo, TodoMessage } from '@/types/todo';
 import { useTranslation } from '@/app/i18n/client';
 import { ArrowLeft,ArrowRight } from 'lucide-react'
 import {getTranslationKey} from '@/lib/utils'
+import { toast } from "sonner"
 
+
+const URL = process.env.NEXT_PUBLIC_API_URL;
 export default function TodoDetailPage() {
   const params = useParams< { id: string,lang:string }>()
   const todo_id= params.id
   const lang= params.lang
   const { t } = useTranslation(lang,"details")
+  const [isLoading, setIsLoading] = useState(false);
   const [todo, setTodo] = useState<Todo | null>(null);
   const [messages, setMessages] = useState<TodoMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
@@ -23,22 +27,19 @@ export default function TodoDetailPage() {
   useEffect(() => {
     // Fetch todo details
     const fetchTodoDetails = async () => {
-        const todos: Todo[] = [
-            {
-              id: '1',
-              title: 'Finish assessment',
-              description: 'Complete the skills assestment task by 28th',
-              status: 'IN_PROGRESS',
-              createdAt: new Date(),
-              updatedAt: new Date()
-            }
-          ];
-      setTodo(todos[0]);
+        setIsLoading(true)
+        await fetch(URL+'/api/todos/'+todo_id)
+        .then(res=>res.json())
+        .then(data=>setTodo(data))
+        .catch(err=>{
+          toast.error(`Failed to fetch todo details, ${err}`)
+        })
+        .finally(()=>setIsLoading(false))
 
       // Mock messages
       const mockMessages: TodoMessage[] = [
         {
-          id: '1',
+          _id: '1',
           todoId: params.id,
           content: 'Started working on the assesment',
           senderId: 'user1',
@@ -51,11 +52,55 @@ export default function TodoDetailPage() {
     fetchTodoDetails();
   }, [params.id]);
 
+
+  const updateTodo = async (status:Todo['status']) => {
+    setIsLoading(true)
+    await fetch(URL+'/api/todos/'+todo_id, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({status})
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      if(data._id) {
+        setTodo(data)
+        toast.success('Todo updated successfully')
+      } else {
+        toast.error('Failed to update todo')
+      }
+    })
+    .finally(()=>setIsLoading(false))
+  }
+
+  const deleteTodo = async (todoId:string) => {
+    // Delete todo
+    if(!todoId) return
+    setIsLoading(true)
+    const data= await fetch(`${URL}/api/todos/${todoId}`, {
+      method: 'DELETE'
+    })
+    .then(res=>res.json())
+    .then(data=>data)
+    .catch(err=>err)
+    .finally(()=>setIsLoading(false))
+
+    if(data) {
+      
+      toast.success('Todo deleted successfully')
+      // Redirect to home
+      router.push(`/${lang}`);
+    }else{
+      toast.error('Failed to delete todo')
+    }
+  }
+
   const sendMessage = async () => {
     if (!newMessage.trim()) return;
 
     const message: TodoMessage = {
-      id: Date.now().toString(),
+      _id: Date.now().toString(),
       todoId: params.id,
       content: newMessage,
       senderId: 'current_user', // Replace with actual user ID
@@ -107,7 +152,7 @@ export default function TodoDetailPage() {
           <div className="h-64 overflow-y-auto mb-4 space-y-2 ">
             {messages.map((msg) => (
               <div 
-                key={msg.id} 
+                key={msg._id} 
                 className={`
                   py-2 px-4 rounded-lg max-w-[80%]
                   ${msg.senderId === 'current_user' 
@@ -135,8 +180,8 @@ export default function TodoDetailPage() {
         </CardContent>
       </Card>
       <div className="flex flex-col justify-evenly space-y-1 w-full mt-4 mb-16">
-        <Button className='w-full' variant="default">{t("mark_as_done")}</Button>
-        <Button className='w-full' variant="destructive">{t("delete")}</Button>
+      {todo.status!="DONE" ? <Button className='w-full' disabled={isLoading} onClick={()=>{updateTodo("DONE")}} variant="default">{t("mark_as_done")}</Button> : ''}
+        <Button className='w-full' disabled={isLoading} onClick={()=>{deleteTodo(todo._id as string)}} variant="destructive">{t("delete")}</Button>
       </div>
     </div>
   );

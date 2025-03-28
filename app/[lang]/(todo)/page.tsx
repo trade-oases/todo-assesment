@@ -9,30 +9,25 @@ import { Todo } from '@/types/todo';
 import { useTranslation } from '@/app/i18n/client';
 import {getTranslationKey} from '@/lib/utils'
 
+const URL = process.env.NEXT_PUBLIC_API_URL;
 export default function TodoListPage() {
   const params = useParams< { lang:string }>()
   const lang= params.lang
   const { t } = useTranslation(lang,"translation")  
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<null|Todo[]>(null);
 
   useEffect(() => {
     // Fetch todos from API
-    const fetchTodos = async () => {
-      const todos: Todo[] = [
-        {
-          id: '1',
-          title: 'Finish assessment',
-          description: 'Complete the skills assestment task by 28th',
-          status: 'IN_PROGRESS',
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
-      ];
-      setTodos(todos);
-    };
-
-    fetchTodos();
+    async function fetchTodos() {
+      const data = await fetch(URL+'/api/todos')
+      .then(res=>res.json())
+      .catch(err=>err)
+      setTodos(data)
+    }
+    fetchTodos()
   }, []);
+
+  if (!todos) return <div>Loading...</div>
 
   return (
     <div className="container mx-auto p-8">
@@ -45,7 +40,7 @@ export default function TodoListPage() {
 
       <div className="grid gap-4">
         {todos.map(todo => (
-          <Card key={todo.id}>
+          <Card key={todo._id}>
             <CardHeader>
               <CardTitle className="flex justify-between items-center">
                 {todo.title}
@@ -61,7 +56,7 @@ export default function TodoListPage() {
             <CardContent>
               <p>{todo.description}</p>
               <div className="mt-4">
-                <Link href={`/${lang}/${todo.id}`}>
+                <Link href={`/${lang}/${todo._id}`}>
                   <Button variant="outline">{t("view_details")}</Button>
                 </Link>
               </div>
