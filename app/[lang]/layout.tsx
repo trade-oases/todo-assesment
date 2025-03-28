@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 
 import { languages } from '../i18n/settings'
 import Link from "next/link";
+import { Toaster } from "@/components/ui/sonner"
 
 export async function generateStaticParams() {
   return languages.map((lng) => ({ lng }))
@@ -42,6 +43,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 `}
       >
         {children}
+        <Toaster />
         <footer className="fixed bottom-0 w-full bg-white border-t p-4 text-center">
           <div className="flex flex-wrap justify-center gap-4">
             {Object.keys(supportedLanguages).map((lng:string) => (

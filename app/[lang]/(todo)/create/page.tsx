@@ -8,6 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from '@/app/i18n/client';
 import { useParams } from 'next/navigation';
+import { toast } from "sonner"
+
 import { 
   Select, 
   SelectContent, 
@@ -17,11 +19,14 @@ import {
 } from '@/components/ui/select';
 import { Todo } from '@/types/todo';
 
+
+const URL = process.env.NEXT_PUBLIC_API_URL;
 export default function CreateTodoPage() {
   const router = useRouter();
   const params = useParams< { lang:string }>()
   const lang= params.lang
   const { t } = useTranslation(lang,"create_todo")
+  const [isLoading, setIsLoading] = useState(false);
   const [todo, setTodo] = useState({
     title: '',
     description: '',
@@ -30,15 +35,34 @@ export default function CreateTodoPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if(todo.title === '' || todo.description === '') {
+      toast.error('Title and description are required');
+      return
+    }
     
+    setIsLoading(true);
     try {
-      // Implement actual API call to create todo
-      console.log('Creating todo:', todo);
       
-      // Redirect to todo list or todo detail page
-      router.push('/');
+      fetch(URL+'/api/todos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(todo)
+      })
+      .then(res=>res.json())
+      .then(data=>{
+        if(data._id) {
+          toast.success('Todo created successfully')
+          router.push(`/${lang}`);
+        } else {
+          toast.error('Failed to create todo')
+        }
+      })
+      .catch(err=>err)
+      .finally(()=>setIsLoading(false))
     } catch (error) {
-      console.error('Failed to create todo', error);
+      toast.error(`Failed to create todo ${error}`)
     }
   };
 
@@ -90,8 +114,8 @@ export default function CreateTodoPage() {
             </div>
 
             <div className="flex flex-col space-y-4">
-              <Button type="submit" className="w-full">{t("create_todo")}</Button>
-              <Button 
+              <Button type="submit" disabled={isLoading} className="w-full">{t("create_todo")}</Button>
+              <Button disabled={isLoading}
                 type="button" 
                 variant="outline" 
                 className="w-full"

@@ -1,5 +1,5 @@
 export interface Todo {
-  id: string;
+  _id?: string;
   title: string;
   description: string;
   status: 'TODO' | 'IN_PROGRESS' | 'DONE';
@@ -8,7 +8,7 @@ export interface Todo {
 }
 
 export interface TodoMessage {
-  id: string;
+  _id?: string;
   todoId: string;
   content: string;
   senderId: string;
